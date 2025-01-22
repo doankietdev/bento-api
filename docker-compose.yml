@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-bento
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=dev
+      - MYSQL_DATABASE=bento
+    volumes:
+      - mysql-bento:/var/lib/mysql
+    networks:
+      - bento
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+  redis:
+    image: redis:6.0
+    container_name: redis-bento
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-bento:/data
+    environment:
+      - REDIS_PASSWORD=dev
+    networks:
+      - bento
+    command: /bin/sh -c 'redis-server --appendonly yes --requirepass $$REDIS_PASSWORD'
+
+networks:
+  bento:
+
+volumes:
+  mysql-bento:
+  redis-bento:
