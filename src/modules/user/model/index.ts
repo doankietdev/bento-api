@@ -49,13 +49,13 @@ export const userRegistrationDTOSchema = userSchema.pick({
   firstName: true,
   lastName: true,
   username: true,
-  password: true,
+  password: true
 }).required();
 
-export const userLoginDTOSchema = userSchema.pick({
-  username: true,
-  password: true,
-}).required();
+export const userLoginDTOSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+})
 
 export type UserRegistrationDTO = z.infer<typeof userRegistrationDTOSchema>;
 export type UserLoginDTO = z.infer<typeof userLoginDTOSchema>;
