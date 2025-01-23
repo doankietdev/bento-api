@@ -70,7 +70,7 @@ export class UserUseCase implements IUserUseCase {
     // 1. Check username existed
     const existedUser = await this.repository.findByCond({ username: dto.username });
     if (existedUser) {
-      throw ErrUsernameExisted;
+      throw AppError.from(ErrUsernameExisted, 400)
     }
 
     // 2. Gen salt and hash password
